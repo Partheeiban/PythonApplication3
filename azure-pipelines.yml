@@ -19,14 +19,7 @@ steps:
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
 
-- bash: |
-   python3.9 -m venv worker_venv
-   source worker_venv/bin/activate
-   pip3.9 install setuptools
-   pip3.9 install -r requirements.txt
-   
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
-  displayName: 'Install Application Dependencies'  
+
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'  
