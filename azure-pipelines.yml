@@ -18,3 +18,15 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+- task: JavaToolInstaller@0
+  displayName: 'Use Java 11'
+  inputs:
+    versionSpec: 11
+    jdkArchitectureOption: x64
+    jdkSourceOption: PreInstalled
+
+- task: UsePythonVersion@0
+  displayName: 'Use Python 3.9.x'
+  inputs:
+    versionSpec: 3.9.x
