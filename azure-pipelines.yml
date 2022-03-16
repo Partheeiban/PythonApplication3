@@ -32,16 +32,6 @@ pool:
   displayName: 'Install Application Dependencies'
 
 
-- script: |
-   curl -LJO https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar
-   
-  displayName: 'Download Unified Jar file'
-  enabled: false
-
-- script: 'java -jar wss-unified-agent.jar -c wss-unified-agent.config -apikey $(apikey) -userkey $(userkey)'
-  displayName: 'Run WhiteSource agent'
-  enabled: false
-
 - task: ArchiveFiles@2
   displayName: 'Archive files'
   inputs:
