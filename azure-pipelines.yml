@@ -9,12 +9,6 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-
-
 - task: JavaToolInstaller@0
   displayName: 'Use Java 11'
   inputs:
@@ -22,7 +16,37 @@ steps:
     jdkArchitectureOption: x64
     jdkSourceOption: PreInstalled
 
+
 - task: UsePythonVersion@0
   displayName: 'Use Python 3.9.x'
   inputs:
     versionSpec: 3.9.x
+
+- bash: |
+   python3.9 -m venv worker_venv
+   source worker_venv/bin/activate
+   pip3.9 install setuptools
+   pip3.9 install -r requirements.txt
+   
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+  displayName: 'Install Application Dependencies'
+
+
+- script: |
+   curl -LJO https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar
+   
+  displayName: 'Download Unified Jar file'
+  enabled: false
+
+- script: 'java -jar wss-unified-agent.jar -c wss-unified-agent.config -apikey $(apikey) -userkey $(userkey)'
+  displayName: 'Run WhiteSource agent'
+  enabled: false
+
+- task: ArchiveFiles@2
+  displayName: 'Archive files'
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
